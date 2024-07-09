@@ -131,8 +131,16 @@ def upload_file():
         return redirect(url_for('index'))
 
     if file and allowed_file(file.filename):
-        file_stream = BytesIO(file.read())
-        raw_text = get_pdf_text(file_stream)
+        file_extension = file.filename.rsplit('.', 1)[1].lower()
+        if file_extension == 'pdf':
+            file_stream = BytesIO(file.read())
+            raw_text = get_pdf_text(file_stream)
+        elif file_extension == 'docx':
+            file_stream = BytesIO(file.read())
+            raw_text = get_docx_text(file_stream)
+        else:
+            return redirect(url_for('index'))
+
         preprocessed_text = preprocess_text(raw_text)
         text_chunks = get_text_chunks(preprocessed_text)
         get_vector_store(text_chunks)
@@ -146,8 +154,7 @@ def upload_file():
 
         roast_response = response["output_text"]
 
-        # Replace {word} with "{word}"
-        roast_response = re.sub(r'\(.?)\*', r'"\1"', roast_response)
+        roast_response = re.sub(r'\*(.*?)\*', r'"\1"', roast_response)
 
         return render_template('response.html', roast_response=roast_response)
 
