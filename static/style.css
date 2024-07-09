@@ -1,0 +1,250 @@
+body {
+  background-color: rgb(255, 247, 235);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+  padding: 20px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.container {
+  padding: 2rem;
+  max-width: 90%;
+  border-radius: 20px;
+  background-color: #fff;
+  box-shadow: 0 2px 7px rgba(0, 0, 0, 0.1);
+  margin: 40px auto 20px; /* Adjust top and bottom margins */
+  box-sizing: border-box;
+  text-align: center; /* This can be removed if you don't want centered text */
+  height: 550px; /* Adjust height as needed */
+  overflow: hidden; /* Hide overflowing content */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* Move text upwards */
+}
+
+@media (min-width: 320px) and (max-width: 480px) {
+  /* Small devices (portrait phones) */
+  .container {
+    padding: 1rem;
+    margin: 5% auto; /* Center the container */
+    min-height: 300px; /* Adjust height as needed */
+  }
+}
+
+@media (min-width: 481px) and (max-width: 767px) {
+  /* Small devices (landscape phones and small tablets) */
+  .container {
+    padding: 1.5rem;
+    margin: 5% auto; /* Center the container */
+    min-height: 350px; /* Adjust height as needed */
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  /* Medium devices (tablets) */
+  .container {
+    padding: 2rem;
+    margin: 4% auto; /* Center the container */
+    min-height: 400px; /* Adjust height as needed */
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1199px) {
+  /* Large devices (desktops and laptops) */
+  .container {
+    padding: 2rem;
+    margin: 3% auto; /* Center the container */
+    min-height: 450px; /* Adjust height as needed */
+  }
+}
+
+@media (min-width: 1200px) {
+  /* Extra large devices (large desktops) */
+  .container {
+    padding: 2rem;
+    margin: 2% auto; /* Center the container */
+    min-height: 500px; /* Adjust height as needed */
+  }
+}
+
+.title {
+  font-family: 'Arial', sans-serif;
+  font-size: 2rem;
+  font-weight: bold;
+  color: black;
+  margin-bottom: -3.5rem; /* Adjust margin */
+}
+
+.typewriter {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 1.2rem;
+  color: black;
+  white-space: pre-wrap;
+  overflow: hidden;
+  border-right: none;
+  margin-bottom: 0.5rem; /* Adjust margin */
+}
+
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
+
+@keyframes blink-caret {
+  from, to { border-color: transparent }
+  50% { border-color: black; }
+}
+
+input#nameInput {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 1rem;
+  border: none;
+  border-bottom: 1px solid black;
+  background: none;
+  color: black;
+  outline: none;
+  width: 50%;
+  display: inline;
+  vertical-align: middle;
+  margin-bottom: 0.5rem; /* Adjust margin */
+}
+
+.file-upload-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.form-control-file {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 1rem;
+  color: black;
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 4px;
+  padding: 0.5rem;
+  margin-right: 0.5rem;
+  transition: background-color 0.2s, border-color 0.2s;
+  display: inline-block;
+  width: auto;
+  box-sizing: border-box;
+}
+
+.form-control-file:hover {
+  background-color: #f0f0f0;
+  border-color: black;
+}
+
+.btn {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 1rem;
+  font-weight: bold;
+  color: white;
+  background-color: black;
+  border: 1px solid black;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.btn-primary:hover {
+  background-color: #333;
+  border-color: #333;
+}
+
+.btn-primary:focus {
+  outline: 3px solid #005fcc;
+}
+
+.typewriter h2 {
+  margin-bottom: 0.5rem; /* Adjust margin */
+}
+
+.typewriter p {
+  text-align: left;
+  white-space: normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 0; /* Adjust margin */
+}
+
+.static-text {
+  animation: none;
+}
+
+.file-upload-container {
+  position: relative;
+  top: 0;
+  left: 0;
+  transform: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .container {
+    height: auto;
+    padding: 1rem;
+    width: 90%;
+  }
+
+  .typewriter {
+    font-size: 1rem;
+  }
+
+  input#nameInput {
+    width: 100%;
+  }
+
+  .file-upload-container {
+    flex-direction: column;
+    top: auto;
+    left: auto;
+    transform: none;
+  }
+
+  .form-control-file {
+    margin-right: 0;
+    margin-bottom: 1rem;
+  }
+}
+
+
+.container h2{
+  margin-top: 4rem;
+  margin-bottom: -1rem;
+}
+
+
+footer {
+  text-align: center;
+  margin-top: 10px;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: rgb(255, 247, 235);
+  padding: 2.5px 0;
+}
+
+footer p {
+  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  font-size: 1.05rem;
+  color: black;
+}
+
+footer a {
+  color: rgb(101, 155, 255);
+  text-decoration: none;
+  font-weight: bold;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}

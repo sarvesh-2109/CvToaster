@@ -1,0 +1,39 @@
+/* static/style.css */
+.rescontainer {
+    max-width: 800px;
+    margin: 50px auto; /* Adjust top and bottom margin as needed */
+    padding: 20px;
+    border: 1px solid #ccc;
+    background-color: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.rescontainer h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.rescontainer p {
+    font-size: 18px;
+    line-height: 1.6;
+    text-align: left;
+}
+
+.rescontainer a {
+    display: block;
+    margin-top: 20px;
+    text-decoration: none;
+    color: #000000;
+    font-weight: bold;
+}
+
+.rescontainer a:hover {
+    text-decoration: underline;
+}
+
+body{
+    background-color: rgb(255, 247, 235);
+
+}

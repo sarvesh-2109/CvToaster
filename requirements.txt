@@ -1,0 +1,17 @@
+Flask==3.0.3
+google-generativeai==0.7.1
+langchain-google-genai==1.0.7
+google-auth==2.31.0
+google-api-core==2.19.1
+google-api-python-client==2.136.0
+langchain==0.2.6
+langchain-community==0.2.6
+langchain-core==0.2.11
+langchain-text-splitters==0.2.2
+langsmith==0.1.83
+PyMuPDF==1.24.7
+python-docx==1.1.2
+python-dotenv==1.0.1
+requests==2.32.3
+
+

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CV Toaster</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <form action="{{ url_for('upload_file') }}" method="post" enctype="multipart/form-data">
+    <div class="container">
+      <h1 class="title">CV Toaster</h1>
+      <h2 class="static-text">"WARNING: Resume Roast Ahead"</h2>
+      <div class="typewriter">
+          <p>
+            This is a binding agreement between you,
+            the valiant but resume-challenged adventurer and me, the Roastmaster Extraordinaire.
+            <br> By submitting your resume, you agree to the following terms and conditions:<br><br>
+            1. Thou Shalt Not Whine<br>
+            2. No Clichés Shall Survive<br>
+            3. Honesty is the Best Policy (Even if it Hurts)<br><br>
+            If you, <input type="text" id="nameInput" name="candidate_name" placeholder="Enter Your Name" required>, agree to these terms and conditions, upload your resume below. Prepare to be roasted, enlightened, and ultimately, resume-revamped!
+          </p>
+      </div>
+      <div class="file-upload-container">
+        <input type="file" class="form-control-file" id="file" name="file" accept=".pdf, .docx" required>
+        <button type="submit" class="btn btn-primary">Upload (.pdf, .docx)</button>
+      </div>
+    </div>
+
+
+  </form>
+
+  
+  <footer>
+    <p>Made by <a href="https://www.linkedin.com/in/amey-kadam-513514229/"target="_blank">Amey</a> and <a href="https://www.linkedin.com/in/sarvesh-mhatre-475859242/"  target="_blank">Sarvesh</a></p>
+  </footer>
+</body>
+
+</html>
