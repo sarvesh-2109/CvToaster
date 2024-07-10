@@ -24,7 +24,7 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
-def get_pdf_text(file_stream):
+async def get_pdf_text(file_stream):
     doc = fitz.open("pdf", file_stream.read())
     text = ""
     for page in doc:
@@ -32,7 +32,7 @@ def get_pdf_text(file_stream):
     return text
 
 
-def get_docx_text(file_stream):
+async def get_docx_text(file_stream):
     doc = docx.Document(file_stream)
     text = ""
     for para in doc.paragraphs:
@@ -101,13 +101,13 @@ def remove_duplicate_lines(text):
     return "\n".join(unique_lines)
 
 
-def get_text_chunks(text):
+async def get_text_chunks(text):
     from langchain.text_splitter import RecursiveCharacterTextSplitter
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=100)
     return text_splitter.split_text(text)
 
 
-def create_in_memory_faiss_index(text_chunks):
+async def create_in_memory_faiss_index(text_chunks):
     if not text_chunks:
         raise ValueError("The text chunks are empty. Cannot create a vector store.")
     embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
@@ -115,7 +115,7 @@ def create_in_memory_faiss_index(text_chunks):
     return vector_store
 
 
-def get_conversational_chain(candidate_name):
+async def get_conversational_chain(candidate_name):
     prompt_template = f"""Alright, prepare to unleash your inner Jeffrey Ross. I'm about to paste the text of a resume 
     belonging to {candidate_name}. I need you to go full-on savage and expose this document for the career-crippling 
     monstrosity it truly is. Don't hold back on the sarcasm, be merciless with the humor, and leave no cliché 
@@ -135,7 +135,7 @@ def get_conversational_chain(candidate_name):
 
 
 @app.route('/upload', methods=['POST'])
-def upload_file():
+async def upload_file():
     if 'file' not in request.files or 'candidate_name' not in request.form:
         return redirect(url_for('index'))
 
@@ -148,27 +148,27 @@ def upload_file():
     if file and allowed_file(file.filename):
         file_stream = BytesIO(file.read())
         if file.filename.lower().endswith('.pdf'):
-            raw_text = get_pdf_text(file_stream)
+            raw_text = await get_pdf_text(file_stream)
         elif file.filename.lower().endswith('.docx'):
-            raw_text = get_docx_text(file_stream)
+            raw_text = await get_docx_text(file_stream)
         else:
             return redirect(url_for('index'))
 
         preprocessed_text = preprocess_text(raw_text)
-        text_chunks = get_text_chunks(preprocessed_text)
+        text_chunks = await get_text_chunks(preprocessed_text)
 
         if not text_chunks:
             return render_template('response.html',
                                    roast_response="Error: The document is empty or could not be processed.")
 
         try:
-            vector_store = create_in_memory_faiss_index(text_chunks)
+            vector_store = await create_in_memory_faiss_index(text_chunks)
         except ValueError as e:
             return render_template('response.html', roast_response=str(e))
 
         docs = vector_store.similarity_search(preprocessed_text)
 
-        chain = get_conversational_chain(candidate_name)
+        chain = await get_conversational_chain(candidate_name)
         response = chain.invoke({"input_documents": docs, "context": preprocessed_text})
 
         roast_response = response["output_text"].replace("*", "\"")
@@ -183,7 +183,3 @@ def upload_file():
 @app.route('/')
 def index():
     return render_template('index.html')
-
-
-# if __name__ == "__main__":
-#     app.run(debug=True)
