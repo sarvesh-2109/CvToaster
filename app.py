@@ -94,12 +94,12 @@ def get_text_chunks(text):
     return text_splitter.split_text(text)
 
 
-def get_vector_store(text_chunks):
+def create_in_memory_faiss_index(text_chunks):
     if not text_chunks:
         raise ValueError("The text chunks are empty. Cannot create a vector store.")
     embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
     vector_store = FAISS.from_texts(text_chunks, embedding=embeddings)
-    vector_store.save_local("faiss_index")
+    return vector_store
 
 
 def get_conversational_chain(candidate_name):
@@ -134,7 +134,13 @@ def upload_file():
 
     if file and allowed_file(file.filename):
         file_stream = BytesIO(file.read())
-        raw_text = get_pdf_text(file_stream)
+        if file.filename.lower().endswith('.pdf'):
+            raw_text = get_pdf_text(file_stream)
+        elif file.filename.lower().endswith('.docx'):
+            raw_text = get_docx_text(file_stream)
+        else:
+            return redirect(url_for('index'))
+
         preprocessed_text = preprocess_text(raw_text)
         text_chunks = get_text_chunks(preprocessed_text)
 
@@ -143,19 +149,16 @@ def upload_file():
                                    roast_response="Error: The document is empty or could not be processed.")
 
         try:
-            get_vector_store(text_chunks)
+            vector_store = create_in_memory_faiss_index(text_chunks)
         except ValueError as e:
             return render_template('response.html', roast_response=str(e))
 
-        embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
-        new_db = FAISS.load_local("faiss_index", embeddings, allow_dangerous_deserialization=True)
-        docs = new_db.similarity_search(preprocessed_text)
+        docs = vector_store.similarity_search(preprocessed_text)
 
         chain = get_conversational_chain(candidate_name)
         response = chain.invoke({"input_documents": docs, "context": preprocessed_text})
 
-        roast_response = response["output_text"]
-        roast_response = roast_response.replace('*{', ' "{').replace('}*', '}"')
+        roast_response = response["output_text"].replace("*", "\"")
         return render_template('response.html', roast_response=roast_response)
 
     return redirect(url_for('index'))
@@ -166,5 +169,3 @@ def index():
     return render_template('index.html')
 
 
-# if __name__ == "__main__":
-#     app.run(debug=True)
