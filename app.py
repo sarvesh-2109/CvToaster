@@ -88,6 +88,19 @@ def preprocess_text(text):
     return result.strip()
 
 
+def remove_duplicate_lines(text):
+    lines = text.split("\n")
+    unique_lines = []
+    seen_lines = set()
+
+    for line in lines:
+        if line.strip() not in seen_lines:
+            unique_lines.append(line.strip())
+            seen_lines.add(line.strip())
+
+    return "\n".join(unique_lines)
+
+
 def get_text_chunks(text):
     from langchain.text_splitter import RecursiveCharacterTextSplitter
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=100)
@@ -108,7 +121,7 @@ def get_conversational_chain(candidate_name):
     monstrosity it truly is. Don't hold back on the sarcasm, be merciless with the humor, and leave no cliché 
     unturned. Remember, the goal is to make {candidate_name} cry and question themselves while simultaneously forcing 
     them to completely revamp this resume from scratch. Let's see if you can turn this career catastrophe into a 
-    comedy goldmine. Roast in one single paragraph. Ignore the roll number and education section. But do comment on 
+    comedy goldmine. Roast in one single paragraph. Ignore the roll number and Education section. But do comment on 
     Projects, Skills, Experience and Extracurricular. Address it directly to {candidate_name} in first person.
 
 
@@ -159,6 +172,9 @@ def upload_file():
         response = chain.invoke({"input_documents": docs, "context": preprocessed_text})
 
         roast_response = response["output_text"].replace("*", "\"")
+
+        roast_response = remove_duplicate_lines(roast_response)
+
         return render_template('response.html', roast_response=roast_response)
 
     return redirect(url_for('index'))
@@ -169,3 +185,5 @@ def index():
     return render_template('index.html')
 
 
+# if __name__ == "__main__":
+#     app.run(debug=True)
